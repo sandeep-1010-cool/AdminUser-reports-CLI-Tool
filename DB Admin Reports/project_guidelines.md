@@ -38,25 +38,41 @@ graph TD
     A[CLI Command] --> B[Master Orchestrator Lambda]
     B --> C[Read DB Inventory from S3]
     B --> D[Cross-Account Worker Invocation]
-    D --> E[Worker Lambda 1<br/>Account A]
-    D --> F[Worker Lambda 2<br/>Account B]
-    D --> G[Worker Lambda N<br/>Account N]
-    
-    E --> H[Connect to MSSQL/MySQL]
-    F --> I[Connect to MSSQL/MySQL]
-    G --> J[Connect to MSSQL/MySQL]
-    
-    H --> K[Upload JSON to S3]
-    I --> L[Upload JSON to S3]
-    J --> M[Upload JSON to S3]
-    
+
+    subgraph "Worker Lambdas (Per Account)"
+        D --> E[Worker Lambda 1<br/>Account A]
+        D --> F[Worker Lambda 2<br/>Account B]
+        D --> G[Worker Lambda N<br/>Account N]
+    end
+
+    subgraph "DB Connections"
+        E --> H[Connect to MSSQL/MySQL]
+        F --> I[Connect to MSSQL/MySQL]
+        G --> J[Connect to MSSQL/MySQL]
+    end
+
+    subgraph "Data Upload to S3"
+        H --> K[Upload JSON to S3]
+        I --> L[Upload JSON to S3]
+        J --> M[Upload JSON to S3]
+    end
+
     K --> N[Master Orchestrator<br/>Aggregation]
     L --> N
     M --> N
-    
+
     N --> O[Generate Consolidated CSV]
     O --> P[Store in Central S3 Bucket]
     P --> Q[CLI Shows Status & S3 Location]
+
+    classDef lambda fill:#f9d,stroke:#333,stroke-width:2px;
+    class B,E,F,G,N lambda;
+    classDef s3 fill:#9f6,stroke:#333,stroke-width:2px;
+    class C,K,L,M,P s3;
+    classDef db fill:#69c,stroke:#333,stroke-width:2px;
+    class H,I,J db;
+    classDef cli fill:#fc6,stroke:#333,stroke-width:2px;
+    class A,Q cli;
 ```
 ### Component Overview
 1. **CLI Tool**: User interface for triggering reports
