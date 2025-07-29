@@ -31,8 +31,7 @@ Generate on-demand database administrator access reports via a CLI tool that tri
                        │ Bucket          │    │ (MSSQL/MySQL)       │
                        └─────────────────┘    └──────────────────────┘
 ```
-Here is a simple flow chart:
-
+### Architecture Diagram
 ```mermaid
 graph TD
     A[CLI Command] --> B[Master Orchestrator Lambda]
