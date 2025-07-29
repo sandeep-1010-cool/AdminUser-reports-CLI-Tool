@@ -31,7 +31,15 @@ Generate on-demand database administrator access reports via a CLI tool that tri
                        │ Bucket          │    │ (MSSQL/MySQL)       │
                        └─────────────────┘    └──────────────────────┘
 ```
+Here is a simple flow chart:
 
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 ### Component Overview
 1. **CLI Tool**: User interface for triggering reports
 2. **Master Orchestrator**: Coordinates cross-account execution
