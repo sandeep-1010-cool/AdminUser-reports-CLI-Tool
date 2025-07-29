@@ -34,11 +34,29 @@ Generate on-demand database administrator access reports via a CLI tool that tri
 Here is a simple flow chart:
 
 ```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+graph TD
+    A[CLI Command] --> B[Master Orchestrator Lambda]
+    B --> C[Read DB Inventory from S3]
+    B --> D[Cross-Account Worker Invocation]
+    D --> E[Worker Lambda 1<br/>Account A]
+    D --> F[Worker Lambda 2<br/>Account B]
+    D --> G[Worker Lambda N<br/>Account N]
+    
+    E --> H[Connect to MSSQL/MySQL]
+    F --> I[Connect to MSSQL/MySQL]
+    G --> J[Connect to MSSQL/MySQL]
+    
+    H --> K[Upload JSON to S3]
+    I --> L[Upload JSON to S3]
+    J --> M[Upload JSON to S3]
+    
+    K --> N[Master Orchestrator<br/>Aggregation]
+    L --> N
+    M --> N
+    
+    N --> O[Generate Consolidated CSV]
+    O --> P[Store in Central S3 Bucket]
+    P --> Q[CLI Shows Status & S3 Location]
 ```
 ### Component Overview
 1. **CLI Tool**: User interface for triggering reports
