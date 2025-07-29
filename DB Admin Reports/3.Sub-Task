@@ -1,0 +1,52 @@
+### CSV Reports for DB Admin Access Compliance
+
+#### Overview
+- Purpose: Produce clear, comprehensive CSV reports for SOC2 audit verification.
+- Outcome: Streamlined audit reviews with clearly labeled and organized compliance data.
+
+---
+
+### Report Features & Structure
+
+#### 1. CSV Format & Columns
+- Standard CSV layout, compatible with Excel.
+- Columns include:
+  - Account ID
+  - Region
+  - Database Name
+  - Database Type
+  - Username
+  - Role Name
+  - Permission Level
+  - Last Login Date
+  - User Status
+  - Report Timestamp
+
+#### 2. Organization & Layout
+- Reports organized by AWS Account:
+  - Clear section headers for each AWS account.
+  - Each section lists databases and admin users clearly.
+
+#### 3. Error Reporting
+- Failed database connections are documented with explicit error reasons.
+- Error details integrated clearly within relevant account sections.
+
+#### 4. Data Coverage
+- Reports include database names where each user holds admin privileges.
+- User status clearly indicated (e.g., Active, Disabled).
+
+#### 5. Data Validation & Security
+- Ensure no sensitive business data included.
+- Validate all fields for accuracy and proper format.
+
+---
+
+### Suggested Report Structure (CSV)
+
+| Section Header (Account ID: <AWS Account ID>)      |            |           |              |           |          |             |                |             |                  |
+|---------------------------------------------------|------------|-----------|--------------|-----------|----------|-------------|----------------|-------------|------------------|
+| Account ID                                        | Region     | Database Name | Database Type | Username  | Role Name | Permission Level | Last Login Date | User Status | Report Timestamp |
+| <Values for each admin user in the account>      |            |           |              |           |          |             |                |             |                  |
+| **Error Section (if any):**                       |            |           |              | Error: <Connection Failure Reason> |  |          |                |             |                  |
+
+---
