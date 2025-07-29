@@ -1,5 +1,80 @@
 # DB Admin Reports CLI Tool - Project Guidelines
 
+## 📑 Table of Contents
+
+### [🎯 Project Overview](#-project-overview)
+- [Primary Goal](#primary-goal)
+- [Business Value](#business-value)
+- [Reference](#reference)
+
+### [🏗️ System Architecture](#️-system-architecture)
+- [High-Level Architecture](#high-level-architecture)
+- [Architecture Diagram](#architecture-diagram)
+- [Component Overview](#component-overview)
+
+### [📋 Complete Workflow](#-complete-workflow)
+- [Step 1: CLI Execution](#step-1-cli-execution)
+- [Step 2: Master Orchestrator Processing](#step-2-master-orchestrator-processing)
+- [Step 3: Cross-Account Worker Invocation](#step-3-cross-account-worker-invocation)
+- [Step 4: Worker Lambda Data Collection](#step-4-worker-lambda-data-collection)
+- [Step 5: Report Generation and Storage](#step-5-report-generation-and-storage)
+
+### [🛠️ Technical Requirements](#️-technical-requirements)
+- [1. CLI Tool Requirements](#1-cli-tool-requirements)
+- [2. Master Orchestrator Lambda Requirements](#2-master-orchestrator-lambda-requirements)
+- [3. Worker Lambda Requirements](#3-worker-lambda-requirements)
+- [4. CSV Report Format Requirements](#4-csv-report-format-requirements)
+- [5. Infrastructure Requirements (Pulumi)](#5-infrastructure-requirements-pulumi)
+
+### [🔧 Development Guidelines](#-development-guidelines)
+- [Code Quality Standards](#code-quality-standards)
+- [Error Handling Patterns](#error-handling-patterns)
+- [Logging Standards](#logging-standards)
+- [Configuration Management](#configuration-management)
+
+### [🚀 Deployment Strategy](#-deployment-strategy)
+- [Phase 1: Infrastructure Deployment](#phase-1-infrastructure-deployment)
+- [Phase 2: Lambda Deployment](#phase-2-lambda-deployment)
+- [Phase 3: CLI Tool Development](#phase-3-cli-tool-development)
+- [Phase 4: Testing and Validation](#phase-4-testing-and-validation)
+
+### [📊 Monitoring and Observability](#-monitoring-and-observability)
+- [CloudWatch Metrics](#cloudwatch-metrics)
+- [CloudWatch Logs](#cloudwatch-logs)
+- [Alerts and Notifications](#alerts-and-notifications)
+
+### [🔒 Security Considerations](#-security-considerations)
+- [Data Protection](#data-protection)
+- [Compliance Requirements](#compliance-requirements)
+- [Security Testing](#security-testing)
+
+### [📈 Performance Optimization](#-performance-optimization)
+- [Lambda Optimization](#lambda-optimization)
+- [Database Optimization](#database-optimization)
+- [Network Optimization](#network-optimization)
+
+### [🧪 Testing Strategy](#-testing-strategy)
+- [Unit Testing](#unit-testing)
+- [Integration Testing](#integration-testing)
+- [Load Testing](#load-testing)
+
+### [📚 Documentation Requirements](#-documentation-requirements)
+- [Technical Documentation](#technical-documentation)
+- [User Documentation](#user-documentation)
+- [Compliance Documentation](#compliance-documentation)
+
+### [🎯 Success Metrics](#-success-metrics)
+- [Performance Metrics](#performance-metrics)
+- [Business Metrics](#business-metrics)
+- [Operational Metrics](#operational-metrics)
+
+### [🔄 Maintenance and Operations](#-maintenance-and-operations)
+- [Regular Maintenance](#regular-maintenance)
+- [Operational Procedures](#operational-procedures)
+- [Continuous Improvement](#continuous-improvement)
+
+---
+
 ## 🎯 Project Overview
 
 ### Primary Goal
