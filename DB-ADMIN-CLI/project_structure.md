@@ -4,10 +4,10 @@
 
 ```
 db-admin-access-reporter/
-├── .azure-pipelines/              # Azure Pipeline configuration files
-│   ├── azure-pipelines.yml        # Main pipeline definition
-│   ├── build-template.yml         # Build job templates
-│   └── deploy-template.yml        # Deployment job templates
+├── .pulumi/                       # Pulumi local state and configuration
+│   ├── dev/                       # Development environment state
+│   ├── staging/                   # Staging environment state
+│   └── prod/                      # Production environment state
 ├── config/                        # Configuration files for different environments
 │   ├── dev.json                   # Development environment config
 │   ├── staging.json               # Staging environment config
@@ -105,11 +105,13 @@ db-admin-access-reporter/
 
 ## 📋 Key Directory Explanations
 
-### **`.azure-pipelines/`**
-Contains all Azure Pipeline YAML files for CI/CD:
-- **Modular pipeline templates** for build and deployment
-- **Environment-specific configurations** for dev/staging/prod
-- **Cross-account deployment** automation
+### **`.pulumi/`**
+Contains Pulumi local state and configuration for different environments:
+- **Development** (`dev/`) - Local development environment state
+- **Staging** (`staging/`) - Staging environment state for testing
+- **Production** (`prod/`) - Production environment state
+- **Local deployment** using `pulumi up` commands
+- **State management** for infrastructure tracking
 
 ### **`config/`**
 Environment-specific configurations:
@@ -252,7 +254,9 @@ Comprehensive testing structure:
     "test:integration": "jest tests/integration",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
-    "deploy:infrastructure": "cd infrastructure && pulumi up",
+    "deploy:infrastructure:dev": "cd infrastructure && pulumi stack select dev && pulumi up",
+    "deploy:infrastructure:staging": "cd infrastructure && pulumi stack select staging && pulumi up",
+    "deploy:infrastructure:prod": "cd infrastructure && pulumi stack select prod && pulumi up",
     "deploy:lambdas": "./scripts/deploy-lambdas.sh"
   },
   "workspaces": [
@@ -356,8 +360,10 @@ npm run build:lambdas     # Build all Lambda functions
 
 ### **3. Deployment Commands**
 ```bash
-# Deploy infrastructure
-npm run deploy:infrastructure
+# Deploy infrastructure locally
+npm run deploy:infrastructure:dev    # Development environment
+npm run deploy:infrastructure:staging # Staging environment
+npm run deploy:infrastructure:prod   # Production environment
 
 # Deploy Lambda functions
 npm run deploy:lambdas
@@ -376,10 +382,11 @@ node scripts/update-inventory.js
 - **Shared utilities** to reduce code duplication
 - **Type safety** with TypeScript throughout
 
-### **2. CI/CD Compatibility**
-- **Azure Pipelines** can easily build and deploy specific components
+### **2. Local Deployment Compatibility**
+- **Pulumi local deployment** for infrastructure management
+- **Environment-specific stacks** (dev/staging/prod)
+- **Local state management** for infrastructure tracking
 - **Workspace management** with npm workspaces
-- **Environment-specific** configurations
 - **Automated testing** and quality checks
 
 ### **3. Development Experience**
@@ -396,6 +403,7 @@ node scripts/update-inventory.js
 
 ### **5. Production Readiness**
 - **Multi-environment** support (dev/staging/prod)
+- **Local Pulumi deployment** with environment-specific stacks
 - **Cross-account deployment** capabilities
 - **Comprehensive logging** and monitoring
 - **Security best practices** with IAM and encryption

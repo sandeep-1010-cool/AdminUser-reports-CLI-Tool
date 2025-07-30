@@ -1,16 +1,17 @@
 #!/bin/bash
 
-echo "Ì¥ç Verifying development environment..."
+echo "ÔøΩÔøΩÔøΩ Verifying development environment..."
 
 # Function to check version numbers
 check_version() {
     tool=$1
     version=$2
     min_version=$3
-    if [[ "$version" < "$min_version" ]]; then
-        echo "‚ùå $tool version $version is less than required $min_version"
-    else
+    # If the sorted order puts min_version first, version is greater than or equal to min_version
+    if [[ "$(printf '%s\n' "$min_version" "$version" | sort -V | head -n1)" == "$min_version" ]]; then
         echo "‚úÖ $tool version $version is OK"
+    else
+        echo "‚ùå $tool version $version is less than required $min_version"
     fi
 }
 
@@ -73,4 +74,6 @@ if command -v az >/dev/null; then
 else
     echo "‚ùå Azure CLI not found. Install from: https://aka.ms/installazurecli"
 fi
+
+# Python
 
