@@ -53,28 +53,26 @@ Develop a CLI tool that generates on-demand database administrator access report
 ```
 
 ### **Detailed Architecture Diagram**
-````mermaid
+```mermaid
 graph TD
     A[CLI Command] --> B[Orchestrator Lambda]
     B --> C[Read DB Inventory from S3]
     B --> D[Assume Cross-Account IAM Roles]
-    D --> E[Connect to Databases (MSSQL/MySQL) in Target Accounts]
+    D --> E[Connect to Databases MSSQL/MySQL in Target Accounts]
     E --> F[Collect Admin User Data]
     F --> G[Upload Results to Central S3]
     G --> H[Generate Consolidated CSV]
     H --> I[Store CSV in Central S3]
     I --> J[CLI Displays Status & S3 Location]
 
-    classDef lambda fill:#f9d,stroke:#333,stroke-width:2px;
-    class B lambda;
-    classDef s3 fill:#9f6,stroke:#333,stroke-width:2px;
-    class C,G,I s3;
-    classDef db fill:#69c,stroke:#333,stroke-width:2px;
-    class E db;
-    classDef cli fill:#fc6,stroke:#333,stroke-width:2px;
-    class A,J cli;
-````
-
+    classDef lambda fill:#f9d,stroke:#333,stroke-width:2px
+    class B lambda
+    classDef s3 fill:#9f6,stroke:#333,stroke-width:2px
+    class C,G,I s3
+    classDef db fill:#69c,stroke:#333,stroke-width:2px
+    class E db
+    classDef cli fill:#fc6,stroke:#333,stroke-width:2px
+    class A,J cli
 ---
 
 ## 📋 **Complete Workflow**
