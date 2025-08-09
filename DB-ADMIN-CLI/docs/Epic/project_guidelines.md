@@ -1,4 +1,4 @@
-Certainly! Below is a **revised and refined version of the guidelines**, incorporating the feedback and additional considerations for improved clarity, organization, and completeness. The updated version emphasizes proper management, structured workflow, and detailed elements for organizational use.
+Certainly! Let's systematically incorporate the new information about **database inventory** and **credential management** into the guidelines. Below is the updated version with detailed modifications and integration of the new details.
 
 ---
 
@@ -75,12 +75,6 @@ graph TD
     class A,J cli;
 ````
 
-### **Component Overview**
-1. **CLI Tool**: User-friendly interface for triggering report generation.  
-2. **Orchestrator Lambda**: Centralized function that assumes IAM roles, queries databases, and aggregates results.  
-3. **Infrastructure**: Managed using Pulumi for resource provisioning.  
-4. **Reports**: CSV format for audit compliance, stored in a central S3 bucket.  
-
 ---
 
 ## 📋 **Complete Workflow**
@@ -90,12 +84,22 @@ graph TD
 - CLI authenticates with AWS credentials and passes parameters to the Lambda function.  
 
 ### **Step 2: Lambda Processing**
-- Reads the database inventory from S3 or Parameter Store.  
-- For each target AWS account:  
-  - Assumes cross-account IAM roles using AWS STS.  
-  - Connects to databases (MSSQL/MySQL) using credentials stored in Secrets Manager.  
-  - Executes SQL queries to collect admin user data.  
-  - Aggregates results from all accounts and databases.  
+1. **Read DB Inventory**:
+   - The Lambda function retrieves the list of databases from S3 or Parameter Store.  
+   - The database inventory is manually updated and maintained by **@maurice.williams**.
+
+2. **Fetch Secrets**:
+   - For each database in the inventory, the Lambda function fetches credentials from AWS Secrets Manager.  
+   - Credentials include:
+     - Database IDs
+     - Usernames and passwords required for database access.
+
+3. **Database Connection**:
+   - Using the fetched credentials, the Lambda function establishes connections to the databases.  
+   - Queries are executed to gather admin user data.
+
+4. **Aggregate Results**:
+   - The Lambda function consolidates admin user data from all databases and accounts.
 
 ### **Step 3: Report Generation**
 - Lambda generates a consolidated CSV report with timestamps and metadata.  
@@ -105,6 +109,19 @@ graph TD
 ---
 
 ## 🛠️ **Technical Requirements**
+
+### **Database Inventory and Credential Management**
+- **Database Inventory**:
+  - Maintained manually by **@maurice.williams**.
+  - Includes database IDs, hostnames, ports, and types (e.g., MSSQL, MySQL).
+  - Stored in S3 or Parameter Store for Lambda access.
+
+- **Secrets Manager**:
+  - Securely stores database credentials.
+  - Credentials include usernames, passwords, and roles.
+  - Lambda fetches credentials dynamically during execution.
+
+---
 
 ### **CLI Tool**
 - **Language**: TypeScript/JavaScript (Node.js).  
@@ -117,6 +134,8 @@ graph TD
   - `--verbose`: Enable detailed logging.  
 - **Output**: Displays status and S3 location of the report.  
 
+---
+
 ### **Orchestrator Lambda**
 - **Language**: TypeScript (Node.js 18.x runtime).  
 - **AWS SDK**: v3 for STS, S3, Secrets Manager integration.  
@@ -126,37 +145,6 @@ graph TD
   - Assumes cross-account IAM roles securely.  
   - Queries databases for admin user data.  
   - Generates and uploads CSV reports to S3.  
-
-### **CSV Report Format**
-- **Columns**: Account ID, Region, DB Name, DB Type, Username, Role, Permission, Last Login, User Status, Timestamp.  
-- **Grouping**: Organized by account, database, and user.  
-- **Error Reporting**: Includes reasons for failed connections.  
-
----
-
-## 🔧 **Development Guidelines**
-
-- **Code Quality**: Enforce strict TypeScript types, ESLint, and Prettier.  
-- **Testing**: Achieve 80%+ coverage with unit and integration tests.  
-- **Error Handling**: Use structured logging and consistent retry logic.  
-- **Configuration**: Centralized configuration management.  
-
----
-
-## 🚀 **Deployment Strategy**
-
-1. **Provision Infrastructure** using Pulumi.  
-2. **Deploy Lambda** and configure IAM roles/secrets.  
-3. **Develop CLI Tool** for user interaction.  
-4. **Test and Validate** with unit, integration, and security tests.  
-
----
-
-## 📊 **Monitoring and Observability**
-
-- **CloudWatch Metrics**: Monitor Lambda invocations, duration, and error rates.  
-- **Logs**: Structured logs with correlation IDs for debugging.  
-- **Alerts**: Configure SNS notifications for errors or anomalies.  
 
 ---
 
@@ -169,48 +157,26 @@ graph TD
 
 ---
 
-## 📈 **Performance Optimization**
-
-- **Lambda**: Optimize memory allocation and concurrency settings.  
-- **Database**: Use efficient SQL queries and connection pooling.  
-- **Network**: Leverage VPC endpoints and compression for data transfer.  
-
----
-
-## 🧪 **Testing Strategy**
-
-- **Unit Tests**: Validate Lambda functionality and CLI commands.  
-- **Integration Tests**: Test end-to-end workflows across accounts.  
-- **Load Tests**: Simulate large datasets and high concurrency.  
-- **Security Tests**: Perform penetration testing and dependency scans.  
-
----
-
-## 📚 **Documentation Requirements**
-
-- **Technical Docs**: Detailed architecture, API reference, and configuration guides.  
-- **User Docs**: CLI usage instructions and troubleshooting guides.  
-- **Compliance Docs**: SOC2-specific controls and audit trails.  
-
----
-
-## 🎯 **Success Metrics**
-
-- **Performance**: Generate reports in under 15 minutes.  
-- **Success Rate**: Achieve >95% successful executions.  
-- **Error Rate**: Maintain <5% failure rate.  
-- **Coverage**: Ensure 100% database inclusion.  
-
----
-
 ## 🔄 **Maintenance and Operations**
 
-- **Updates**: Perform monthly dependency updates.  
-- **Monitoring**: Conduct weekly reviews of logs and metrics.  
-- **Security Audits**: Perform quarterly audits of IAM roles and configurations.  
-- **Continuous Improvement**: Incorporate user feedback and optimize workflows.  
+- **Database Inventory Updates**:
+  - **@maurice.williams** manually reviews and updates the database inventory periodically.
+  - Ensure all new databases are added to the inventory.
+
+- **Credential Updates**:
+  - Credentials stored in Secrets Manager must be updated whenever database passwords or roles change.
+  - Manual updates performed by **@maurice.williams**.
 
 ---
 
-### **Improved Management and Organizational Enhancements**
-This version ensures proper structure, detailed workflow steps, and enhanced security considerations. If you’d like further refinements or additional elements, let me know!
+### **Actionable Enhancements**
+1. **Automation Opportunities**:
+   - Explore automating database inventory updates using APIs or scripts in future iterations.
+   - Implement automated credential rotation using Secrets Manager.
+
+2. **Documentation**:
+   - Provide clear instructions for manually updating the database inventory and credentials in Secrets Manager.
+
+---
+
+This revised version integrates the manual processes managed by **@maurice.williams** while ensuring the workflow remains secure, efficient, and auditable. Let me know if further refinements are needed!
