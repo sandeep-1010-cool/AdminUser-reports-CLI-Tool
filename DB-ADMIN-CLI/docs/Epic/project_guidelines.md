@@ -73,7 +73,6 @@ graph TD
     class E db
     classDef cli fill:#fc6,stroke:#333,stroke-width:2px
     class A,J cli
----
 
 ## 📋 **Complete Workflow**
 
